@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -189,6 +189,58 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = false })
+-- twilight
+-- vim.api.nvim_set_keymap("n", "tw", ":Twilight<enter>", {noremap=false})
+-- buffers
+vim.keymap.set('n', '<leader>bl', ':blast<enter>', { desc = 'Last Buffer', noremap = false })
+vim.keymap.set('n', '<leader>bh', ':bfirst<enter>', { desc = 'First Buffer', noremap = false })
+vim.keymap.set('n', '<leader>bj', ':bprev<enter>', { desc = 'Previous Buffer', noremap = false })
+vim.keymap.set('n', '<leader>bk', ':bnext<enter>', { desc = 'Next Buffer', noremap = false })
+vim.keymap.set('n', '<leader>bd', ':bdelete<enter>', { desc = 'Delete Buffer', noremap = false })
+vim.keymap.set('n', '<leader>bn', ':bdelete!<enter>', { desc = 'Nuke Buffer', noremap = false })
+-- files
+vim.api.nvim_set_keymap('n', 'QQ', ':q!<enter>', { noremap = false })
+-- vim.api.nvim_set_keymap("n", "WW", ":w!<enter>", {noremap=false})
+vim.api.nvim_set_keymap('n', 'E', '$', { noremap = false })
+vim.api.nvim_set_keymap('n', 'B', '^', { noremap = false })
+-- vim.api.nvim_set_keymap('n', 'TT', ':TransparentToggle<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'ss', ':noh<CR>', { noremap = true })
+--
+-- splits
+--
+vim.api.nvim_set_keymap('n', '<C-W>,', ':vertical resize -10<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-W>.', ':vertical resize +10<CR>', { noremap = true })
+vim.keymap.set('n', '<space><space>', '<cmd>set nohlsearch<CR>')
+
+-- Quicker close split
+vim.keymap.set('n', '<leader>qq', ':q<CR>', { silent = true, noremap = true })
+
+-- Keymaps for better default experience
+-- See `:help vim.keymap.set()`
+-- vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+-- vim.keymap.set('n', '<C-H>', '<C-W>h', {noremap=true, silent=true})
+-- vim.keymap.set('n', '<C-J>', '<C-W>j', {noremap=true, silent=true})
+-- vim.keymap.set('n', '<C-K>', '<C-W>k', {noremap=true, silent=true})
+-- vim.keymap.set('n', '<C-L>', '<C-W>l', {noremap=true, silent=true})
+
+-- Remap for dealing with word wrap
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+-- Noice
+-- vim.api.nvim_set_keymap("n", "<leader>nn", ":Noice dismiss<CR>", {noremap=true})
+
+-- vim.keymap.set("n", "<leader>ee", "<cmd>GoIfErr<cr>",
+--   {silent = true, noremap = true}
+-- )
+
+-- LazyGit
+-- vim.keymap.set('n', '<leader>gg', ':LazyGit<CR>', { noremap = true, silent = true })
+
+-- undefine the vim <s> key's normal delete function
+-- vim.keymap.set({ 'n', 'x' }, 's', '<Nop>')
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -281,6 +333,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       require('which-key').register {
+        ['<leader>b'] = { name = '[B]uffer', _ = 'which_key_ignore' },
         ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
@@ -566,16 +619,16 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+        gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
+        rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        tsserver = {},
         --
 
         lua_ls = {
@@ -773,6 +826,9 @@ require('lazy').setup({
     end,
   },
 
+  { 'rose-pine/neovim', name = 'rose-pine' },
+  { 'romainl/Apprentice' },
+
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -835,7 +891,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'go', 'rust', 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -873,12 +929,12 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -886,6 +942,7 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
+  require 'custom.plugins.init',
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
