@@ -13,4 +13,5 @@ return {
   require 'custom.plugins.flash',
   require 'custom.plugins.undotree',
   require 'custom.plugins.toggleterm',
+  require 'custom.plugins.treesitter-textobjects',
 }

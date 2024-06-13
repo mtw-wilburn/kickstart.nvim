@@ -4,9 +4,14 @@ return {
   dependencies = { 'nvim-lua/plenary.nvim' },
   config = function()
     local harpoon = require 'harpoon'
-    harpoon:setup {}
+    harpoon:setup {
+      settings = {
+        save_on_toggle = true,
+        sync_on_ui_close = false,
+      },
+    }
 
-    vim.keymap.set('n', '<leader>a', function()
+    vim.keymap.set('n', '<leader>m', function()
       harpoon:list():add()
     end, { desc = 'Add harpoon mark' })
     vim.keymap.set('n', '<M-e>', function()
